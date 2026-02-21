@@ -26,7 +26,7 @@ public partial class PlayerController : CharacterBody2D
             _coyoteTimer -= dt;
         }
 
-        if (Input.IsActionJustPressed("ui_accept"))
+        if (Input.IsActionJustPressed("jump"))
         {
             _jumpBufferTimer = JumpBufferTime;
         }
@@ -35,14 +35,14 @@ public partial class PlayerController : CharacterBody2D
             _jumpBufferTimer -= dt;
         }
 
-        var direction = Input.GetAxis("ui_left", "ui_right");
+        var direction = Input.GetAxis("move_left", "move_right");
         Velocity = new Vector2(direction * MoveSpeed, Velocity.Y);
 
-        // Apply project gravity for consistent behavior with engine settings.
-        var gravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
+        // CharacterBody2D gravity comes from project/default physics settings.
+        var gravity = GetGravity();
         if (!IsOnFloor())
         {
-            Velocity += new Vector2(0, gravity * GravityScale * dt);
+            Velocity += gravity * GravityScale * dt;
         }
 
         if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)

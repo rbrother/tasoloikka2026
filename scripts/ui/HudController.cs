@@ -4,7 +4,7 @@ namespace Tasoloikka2026.UI;
 
 public partial class HudController : CanvasLayer
 {
-    [Export] public string StartText = "Arrows/A,D to move, Space/Enter to jump";
+    [Export] public string StartText = "A/D to move, Space to jump";
 
     public override void _Ready()
     {
