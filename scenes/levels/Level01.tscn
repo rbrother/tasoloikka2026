@@ -7,6 +7,11 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/BirdEnemy.tscn" id="5_moxd0"]
 [ext_resource type="Texture2D" uid="uid://bvmp4iaevra07" path="res://assets/backgrounds/futuristic_city_near_1024x1080.png" id="6_aa6kc"]
 [ext_resource type="PackedScene" path="res://scenes/objects/FinishDoor.tscn" id="7_1x37v"]
+[ext_resource type="PackedScene" path="res://scenes/objects/SpikeTrap.tscn" id="8_qe3r4"]
+[ext_resource type="PackedScene" path="res://scenes/objects/DropThroughPlatform.tscn" id="9_k6p2c"]
+[ext_resource type="PackedScene" path="res://scenes/objects/BreakablePlatform.tscn" id="10_8h9v1"]
+[ext_resource type="PackedScene" path="res://scenes/objects/MovingPlatform.tscn" id="11_f2j8t"]
+[ext_resource type="PackedScene" path="res://scenes/objects/BouncePad.tscn" id="12_o3u7l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -165,4 +170,22 @@ position = Vector2(680, 603)
 position = Vector2(1385, 338)
 
 [node name="FinishDoor" parent="." unique_id=1857097189 instance=ExtResource("7_1x37v")]
-position = Vector2(1543, 434)
+position = Vector2(1891, 891)
+
+[node name="SpikeTrap" parent="." unique_id=1037062181 instance=ExtResource("8_qe3r4")]
+position = Vector2(1204, 890)
+
+[node name="DropThroughPlatform" parent="." unique_id=722798352 instance=ExtResource("9_k6p2c")]
+position = Vector2(1710, 589)
+
+[node name="BreakablePlatform" parent="." unique_id=1268665112 instance=ExtResource("10_8h9v1")]
+position = Vector2(1713, 485)
+
+[node name="MovingPlatform" parent="." unique_id=871246499 instance=ExtResource("11_f2j8t")]
+position = Vector2(430, 610)
+MoveOffset = Vector2(210, 0)
+MoveSpeed = 0.9
+
+[node name="BouncePad" parent="." unique_id=1333414049 instance=ExtResource("12_o3u7l")]
+position = Vector2(328, 890)
+BounceVelocity = -560.0

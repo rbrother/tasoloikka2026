@@ -42,6 +42,7 @@ public partial class PlayerController : CharacterBody2D
     private float _throwChargeTimer;
     private bool _isDead;
     private bool _wasOnFloor;
+    private float _dropThroughTimer;
 
     public override void _Ready()
     {
@@ -74,6 +75,7 @@ public partial class PlayerController : CharacterBody2D
 
         var dt = (float)delta;
         var isOnFloor = IsOnFloor();
+        HandleDropThrough(dt);
 
         HandleThrowInput(dt);
 
@@ -86,7 +88,8 @@ public partial class PlayerController : CharacterBody2D
             _coyoteTimer -= dt;
         }
 
-        if (Input.IsActionJustPressed("jump"))
+        var dropPressed = isOnFloor && Input.IsActionPressed("move_down") && Input.IsActionJustPressed("jump");
+        if (!dropPressed && Input.IsActionJustPressed("jump"))
         {
             _jumpBufferTimer = JumpBufferTime;
         }
@@ -154,6 +157,26 @@ public partial class PlayerController : CharacterBody2D
             ThrowStone();
             _isChargingThrow = false;
             _throwChargeTimer = 0.0f;
+        }
+    }
+
+    private void HandleDropThrough(float dt)
+    {
+        if (_dropThroughTimer > 0.0f)
+        {
+            _dropThroughTimer -= dt;
+            SetCollisionMaskValue(2, false);
+            return;
+        }
+
+        SetCollisionMaskValue(2, true);
+
+        if (IsOnFloor() && Input.IsActionPressed("move_down") && Input.IsActionJustPressed("jump"))
+        {
+            _dropThroughTimer = 0.22f;
+            _jumpBufferTimer = 0.0f;
+            _coyoteTimer = 0.0f;
+            Velocity = new Vector2(Velocity.X, 70.0f);
         }
     }
 
@@ -245,6 +268,16 @@ public partial class PlayerController : CharacterBody2D
         SetPhysicsProcess(false);
         SetProcess(false);
         ShowWinText();
+    }
+
+    public void Bounce(float bounceVelocity)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        Velocity = new Vector2(Velocity.X, bounceVelocity);
     }
 
     private void SpawnExplosion()
@@ -375,6 +408,7 @@ public partial class PlayerController : CharacterBody2D
     {
         EnsureActionWithKey("move_left", Key.A);
         EnsureActionWithKey("move_right", Key.D);
+        EnsureActionWithKey("move_down", Key.S);
         EnsureActionWithKey("jump", Key.Space);
         EnsureActionWithKey("throw", Key.Comma);
     }

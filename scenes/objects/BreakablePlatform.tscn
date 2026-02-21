@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/BreakablePlatform.cs" id="1_gx7x2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_9b7x2"]
+size = Vector2(190, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3c8w"]
+size = Vector2(190, 28)
+
+[node name="BreakablePlatform" type="Node2D"]
+script = ExtResource("1_gx7x2")
+
+[node name="PlatformBody" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformBody"]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_9b7x2")
+
+[node name="Visual" type="Polygon2D" parent="PlatformBody"]
+color = Color(0.68, 0.45, 0.25, 1)
+polygon = PackedVector2Array(-95, -30, 95, -30, 95, 0, -95, 0)
+
+[node name="Crack" type="Polygon2D" parent="PlatformBody/Visual"]
+color = Color(0.22, 0.16, 0.11, 1)
+polygon = PackedVector2Array(-58, -20, -22, -10, 2, -18, 40, -8, 64, -16, 20, -2, -30, -4)
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_f3c8w")
