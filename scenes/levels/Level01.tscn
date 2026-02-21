@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://8b12xpatxnxa"]
 
-[ext_resource type="Texture2D" uid="uid://d0horvpbxlw7n" path="res://assets/backgrounds/sky_funny_clouds_1920x1080.png" id="1_hq48q"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/futuristic_city_far_1024x1080.png" id="1_hq48q"]
 [ext_resource type="Texture2D" uid="uid://c6qpkdokf4u5h" path="res://assets/tilesets/grass_strip_wind_1.png" id="2_r6jsn"]
 [ext_resource type="Texture2D" uid="uid://bkmdssxitg6ue" path="res://assets/tilesets/grass_strip_wind_2.png" id="3_wje17"]
 [ext_resource type="Texture2D" uid="uid://bgyv51ixoc0nt" path="res://assets/tilesets/grass_strip_wind_3.png" id="4_e5n2m"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/BirdEnemy.tscn" id="5_moxd0"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/futuristic_city_near_1024x1080.png" id="6_aa6kc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -43,10 +44,35 @@ animations = [{
 
 [node name="Level01" type="Node2D" unique_id=1873508809]
 
-[node name="Background" type="Sprite2D" parent="." unique_id=2121911332]
-z_index = -10
-position = Vector2(953, 567)
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_base_scale = Vector2(1, 1)
+layer = -20
+
+[node name="FarLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.12, 0.05)
+motion_mirroring = Vector2(2048, 0)
+
+[node name="FarSprite" type="Sprite2D" parent="ParallaxBackground/FarLayer"]
+centered = false
 texture = ExtResource("1_hq48q")
+
+[node name="FarSprite2" type="Sprite2D" parent="ParallaxBackground/FarLayer"]
+position = Vector2(1024, 0)
+centered = false
+texture = ExtResource("1_hq48q")
+
+[node name="NearLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.22, 0.1)
+motion_mirroring = Vector2(2048, 0)
+
+[node name="NearSprite" type="Sprite2D" parent="ParallaxBackground/NearLayer"]
+centered = false
+texture = ExtResource("6_aa6kc")
+
+[node name="NearSprite2" type="Sprite2D" parent="ParallaxBackground/NearLayer"]
+position = Vector2(1024, 0)
+centered = false
+texture = ExtResource("6_aa6kc")
 
 [node name="Ground" type="StaticBody2D" parent="." unique_id=1862849188]
 position = Vector2(960, 924)
