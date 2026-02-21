@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/GameManager.cs" id="1_7ox2f"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Level01.tscn" id="2_q8x31"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_4w11n"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="4_42vsa"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_7ox2f")
+
+[node name="Level" parent="." instance=ExtResource("2_q8x31")]
+
+[node name="Player" parent="." instance=ExtResource("3_4w11n")]
+position = Vector2(40, 80)
+
+[node name="HUD" parent="." instance=ExtResource("4_42vsa")]
+

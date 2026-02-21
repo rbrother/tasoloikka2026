@@ -1,0 +1,13 @@
+﻿# Godot ignores transient editor/build outputs
+.godot/
+.mono/
+.import/
+
+# C# build outputs
+bin/
+obj/
+
+# Rider / VS
+.idea/
+.vs/
+*.sln.iml
