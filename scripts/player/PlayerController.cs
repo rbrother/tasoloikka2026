@@ -171,6 +171,8 @@ public partial class PlayerController : CharacterBody2D
         SetPhysicsProcess(false);
         SetProcess(false);
         await ToSignal(GetTree().CreateTimer(0.35), SceneTreeTimer.SignalName.Timeout);
+        ShowTryAgainText();
+        await ToSignal(GetTree().CreateTimer(2.2), SceneTreeTimer.SignalName.Timeout);
         GetTree().ReloadCurrentScene();
     }
 
@@ -185,6 +187,32 @@ public partial class PlayerController : CharacterBody2D
         explosion.GlobalPosition = GlobalPosition + new Vector2(0.0f, -24.0f);
         var parentNode = GetTree().CurrentScene ?? GetParent();
         parentNode?.AddChild(explosion);
+    }
+
+    private void ShowTryAgainText()
+    {
+        var sceneRoot = GetTree().CurrentScene;
+        if (sceneRoot == null)
+        {
+            return;
+        }
+
+        var overlay = new CanvasLayer();
+        var label = new Label
+        {
+            Text = "Try Again",
+            Modulate = new Color(1.0f, 0, 0, 0.6f),
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        label.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        label.AddThemeFontSizeOverride("font_size", 200);
+        label.AddThemeColorOverride("font_outline_color", new Color(0, 0, 0, 0.4f));
+        label.AddThemeConstantOverride("outline_size", 20);
+
+        overlay.AddChild(label);
+        sceneRoot.AddChild(overlay);
     }
 
     private float GetChargeRatio()
