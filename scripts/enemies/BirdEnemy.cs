@@ -14,6 +14,7 @@ public partial class BirdEnemy : Area2D
     private float _hoverTimer;
     private int _remainingHits;
     private AnimatedSprite2D? _sprite;
+    private PackedScene? _explosionScene;
 
     public override void _Ready()
     {
@@ -21,6 +22,7 @@ public partial class BirdEnemy : Area2D
         _remainingHits = HitsToKill;
         _sprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
         _sprite?.Play("flap");
+        _explosionScene = GD.Load<PackedScene>("res://scenes/effects/Explosion.tscn");
         BodyEntered += OnBodyEntered;
     }
 
@@ -39,6 +41,7 @@ public partial class BirdEnemy : Area2D
             _remainingHits--;
             if (_remainingHits <= 0)
             {
+                SpawnExplosion();
                 QueueFree();
             }
 
@@ -49,5 +52,18 @@ public partial class BirdEnemy : Area2D
         {
             player.Die();
         }
+    }
+
+    private void SpawnExplosion()
+    {
+        if (_explosionScene == null)
+        {
+            return;
+        }
+
+        var explosion = _explosionScene.Instantiate<Node2D>();
+        explosion.GlobalPosition = GlobalPosition;
+        var parentNode = GetTree().CurrentScene ?? GetParent();
+        parentNode?.AddChild(explosion);
     }
 }

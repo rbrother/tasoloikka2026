@@ -29,11 +29,13 @@ public partial class PlayerController : CharacterBody2D
     private float _defaultGravity;
     private AnimatedSprite2D? _animatedSprite;
     private PackedScene? _stoneScene;
+    private PackedScene? _explosionScene;
     private Node2D? _chargeIndicator;
     private Polygon2D? _chargeFill;
     private int _facing = 1;
     private bool _isChargingThrow;
     private float _throwChargeTimer;
+    private bool _isDead;
 
     public override void _Ready()
     {
@@ -42,6 +44,7 @@ public partial class PlayerController : CharacterBody2D
         _animatedSprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
         _animatedSprite?.Play("idle");
         _stoneScene = GD.Load<PackedScene>("res://scenes/projectiles/Stone.tscn");
+        _explosionScene = GD.Load<PackedScene>("res://scenes/effects/Explosion.tscn");
         _chargeIndicator = GetNodeOrNull<Node2D>("ChargeIndicator");
         _chargeFill = GetNodeOrNull<Polygon2D>("ChargeIndicator/Fill");
         if (_chargeIndicator != null)
@@ -52,6 +55,11 @@ public partial class PlayerController : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         var dt = (float)delta;
         var isOnFloor = IsOnFloor();
 
@@ -150,9 +158,33 @@ public partial class PlayerController : CharacterBody2D
         parentNode?.AddChild(stone);
     }
 
-    public void Die()
+    public async void Die()
     {
+        if (_isDead)
+        {
+            return;
+        }
+
+        _isDead = true;
+        SpawnExplosion();
+        Visible = false;
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        await ToSignal(GetTree().CreateTimer(0.35), SceneTreeTimer.SignalName.Timeout);
         GetTree().ReloadCurrentScene();
+    }
+
+    private void SpawnExplosion()
+    {
+        if (_explosionScene == null)
+        {
+            return;
+        }
+
+        var explosion = _explosionScene.Instantiate<Node2D>();
+        explosion.GlobalPosition = GlobalPosition + new Vector2(0.0f, -24.0f);
+        var parentNode = GetTree().CurrentScene ?? GetParent();
+        parentNode?.AddChild(explosion);
     }
 
     private float GetChargeRatio()
