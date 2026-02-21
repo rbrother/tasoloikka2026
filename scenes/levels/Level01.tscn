@@ -78,15 +78,24 @@ autoplay = "wind"
 
 [node name="Step1" parent="." unique_id=2050425843 instance=ExtResource("13_cw8t1")]
 position = Vector2(520, 820)
+
 [node name="Step2" parent="." unique_id=1259601029 instance=ExtResource("13_cw8t1")]
 position = Vector2(730, 730)
+
 [node name="Step3" parent="." unique_id=971039524 instance=ExtResource("13_cw8t1")]
 position = Vector2(940, 640)
+
 [node name="Step4" parent="." unique_id=1133382398 instance=ExtResource("13_cw8t1")]
 position = Vector2(1150, 550)
+
 [node name="Step5" parent="." unique_id=599914109 instance=ExtResource("13_cw8t1")]
 position = Vector2(1410, 470)
 scale = Vector2(1.454545, 1)
+
+[node name="VerticalPlatform" parent="." unique_id=335041375 instance=ExtResource("13_cw8t1")]
+position = Vector2(185, 450)
+rotation = 1.5708
+scale = Vector2(1.6, 1)
 
 [node name="BirdEnemy" parent="." unique_id=260061340 instance=ExtResource("5_moxd0")]
 position = Vector2(980, 760)
@@ -117,3 +126,21 @@ MoveSpeed = 0.9
 [node name="BouncePad" parent="." unique_id=1333414049 instance=ExtResource("12_o3u7l")]
 position = Vector2(213, 888)
 BounceVelocity = -560.0
+
+[node name="BirdEnemy4" parent="." unique_id=1666723797 instance=ExtResource("5_moxd0")]
+position = Vector2(1591, 783)
+
+[node name="VerticalPlatform2" parent="." unique_id=1935641151 instance=ExtResource("13_cw8t1")]
+position = Vector2(391, 315.00003)
+rotation = 1.5708
+scale = Vector2(1.6, 1)
+
+[node name="VerticalPlatform3" parent="." unique_id=1415985928 instance=ExtResource("13_cw8t1")]
+position = Vector2(185, 97)
+rotation = 1.5708
+scale = Vector2(1.6, 1)
+
+[node name="VerticalPlatform4" parent="." unique_id=1920512324 instance=ExtResource("13_cw8t1")]
+position = Vector2(391, -36)
+rotation = 1.5708
+scale = Vector2(1.6, 1)
