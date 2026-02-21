@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/GoatSeekerEnemy.cs" id="1_hq3n1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/enemy_goat_scarf.png" id="2_x2n4s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1f40k"]
+size = Vector2(22, 28)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t4w0a"]
+radius = 18.0
+
+[node name="GoatSeekerEnemy" type="CharacterBody2D"]
+script = ExtResource("1_hq3n1")
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+shape = SubResource("RectangleShape2D_1f40k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+scale = Vector2(2, 2)
+texture = ExtResource("2_x2n4s")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_t4w0a")

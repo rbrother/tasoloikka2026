@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/FrogHopperEnemy.cs" id="1_5vn2m"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/enemy_frog_tie.png" id="2_r0m19"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y6l3a"]
+size = Vector2(22, 26)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w9h2d"]
+radius = 18.0
+
+[node name="FrogHopperEnemy" type="CharacterBody2D"]
+script = ExtResource("1_5vn2m")
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_y6l3a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+scale = Vector2(2, 2)
+texture = ExtResource("2_r0m19")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, -13)
+shape = SubResource("CircleShape2D_w9h2d")

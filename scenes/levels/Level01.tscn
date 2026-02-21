@@ -13,6 +13,10 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/MovingPlatform.tscn" id="11_f2j8t"]
 [ext_resource type="PackedScene" path="res://scenes/objects/BouncePad.tscn" id="12_o3u7l"]
 [ext_resource type="PackedScene" path="res://scenes/objects/StepPlatform.tscn" id="13_cw8t1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/MonkeySlingerEnemy.tscn" id="14_gs2j4"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/GoatSeekerEnemy.tscn" id="15_vq7b1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/FoxPatrolEnemy.tscn" id="16_nz4y2"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/FrogHopperEnemy.tscn" id="17_kp6m9"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -129,6 +133,19 @@ BounceVelocity = -560.0
 
 [node name="BirdEnemy4" parent="." unique_id=1666723797 instance=ExtResource("5_moxd0")]
 position = Vector2(1591, 783)
+
+[node name="MonkeySlingerEnemy" parent="." unique_id=1521250252 instance=ExtResource("14_gs2j4")]
+position = Vector2(1046, 892)
+
+[node name="GoatSeekerEnemy" parent="." unique_id=63849983 instance=ExtResource("15_vq7b1")]
+position = Vector2(655, 892)
+HitsToKill = 1
+
+[node name="FoxPatrolEnemy" parent="." unique_id=544125977 instance=ExtResource("16_nz4y2")]
+position = Vector2(1718, 892)
+
+[node name="FrogHopperEnemy" parent="." unique_id=455297757 instance=ExtResource("17_kp6m9")]
+position = Vector2(1450, 892)
 
 [node name="VerticalPlatform2" parent="." unique_id=1935641151 instance=ExtResource("13_cw8t1")]
 position = Vector2(391, 315.00003)

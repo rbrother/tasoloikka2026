@@ -51,6 +51,7 @@ public partial class PlayerController : CharacterBody2D
 
     public override void _Ready()
     {
+        AddToGroup("player");
         EnsureInputActions();
         _defaultGravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
         _animatedSprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
