@@ -1,9 +1,34 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1_f82ys"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_idle_front.png" id="2_05cmv"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_front_1.png" id="3_i4dlh"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_front_2.png" id="4_0uqii"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nkqao"]
 size = Vector2(12, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lha1o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_05cmv")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_i4dlh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0uqii")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_f82ys")
@@ -12,10 +37,10 @@ script = ExtResource("1_f82ys")
 position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_nkqao")
 
-[node name="BodyVisual" type="Polygon2D" parent="."]
-color = Color(0.85, 0.82, 0.15, 1)
-position = Vector2(0, -12)
-polygon = PackedVector2Array(-6, -12, 6, -12, 6, 12, -6, 12)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_lha1o")
+animation = &"idle"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 enabled = true

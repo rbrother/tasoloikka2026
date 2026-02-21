@@ -19,11 +19,14 @@ public partial class PlayerController : CharacterBody2D
     private float _coyoteTimer;
     private float _jumpBufferTimer;
     private float _defaultGravity;
+    private AnimatedSprite2D? _animatedSprite;
 
     public override void _Ready()
     {
         EnsureInputActions();
         _defaultGravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
+        _animatedSprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
+        _animatedSprite?.Play("idle");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -76,7 +79,23 @@ public partial class PlayerController : CharacterBody2D
             _coyoteTimer = 0.0f;
         }
 
+        UpdateAnimation();
         MoveAndSlide();
+    }
+
+    private void UpdateAnimation()
+    {
+        if (_animatedSprite == null)
+        {
+            return;
+        }
+
+        var shouldWalk = Mathf.Abs(Velocity.X) > 5.0f && IsOnFloor();
+        var targetAnimation = shouldWalk ? "walk" : "idle";
+        if (_animatedSprite.Animation != targetAnimation)
+        {
+            _animatedSprite.Play(targetAnimation);
+        }
     }
 
     private static void EnsureInputActions()
