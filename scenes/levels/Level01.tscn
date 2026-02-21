@@ -179,7 +179,8 @@ position = Vector2(1204, 890)
 position = Vector2(1710, 589)
 
 [node name="BreakablePlatform" parent="." unique_id=1268665112 instance=ExtResource("10_8h9v1")]
-position = Vector2(1713, 485)
+position = Vector2(760, 836)
+BreakDelaySeconds = 3.0
 
 [node name="MovingPlatform" parent="." unique_id=871246499 instance=ExtResource("11_f2j8t")]
 position = Vector2(430, 610)

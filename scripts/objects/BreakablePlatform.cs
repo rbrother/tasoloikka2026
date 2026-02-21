@@ -5,12 +5,14 @@ namespace Tasoloikka2026.Objects;
 public partial class BreakablePlatform : Node2D
 {
     [Export] public float BreakDelaySeconds = 1.0f;
+    [Export] public float FlashSpeed = 10.0f;
 
     private CollisionShape2D? _collisionShape;
     private CanvasItem? _visual;
     private Area2D? _trigger;
     private bool _isTriggered;
-    private float _timer;
+    private bool _isBroken;
+    private float _flashTimer;
 
     public override void _Ready()
     {
@@ -23,23 +25,27 @@ public partial class BreakablePlatform : Node2D
         }
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
-        if (!_isTriggered)
+        if (_visual == null)
         {
             return;
         }
 
-        _timer += (float)delta;
-        if (_timer >= BreakDelaySeconds)
+        if (_isTriggered && !_isBroken)
         {
-            BreakNow();
+            _flashTimer += (float)delta * FlashSpeed;
+            var t = (Mathf.Sin(_flashTimer) + 1.0f) * 0.5f;
+            _visual.Modulate = Color.FromHsv(0.1f, 0.55f - 0.35f * t, 0.70f + 0.30f * t, 1.0f);
+            return;
         }
+
+        _visual.Modulate = Colors.White;
     }
 
-    private void OnTriggerBodyEntered(Node2D body)
+    private async void OnTriggerBodyEntered(Node2D body)
     {
-        if (_isTriggered)
+        if (_isTriggered || _isBroken)
         {
             return;
         }
@@ -47,14 +53,20 @@ public partial class BreakablePlatform : Node2D
         if (body is CharacterBody2D)
         {
             _isTriggered = true;
-            _timer = 0.0f;
+            await ToSignal(GetTree().CreateTimer(BreakDelaySeconds), SceneTreeTimer.SignalName.Timeout);
+            BreakNow();
         }
     }
 
     private void BreakNow()
     {
+        if (_isBroken)
+        {
+            return;
+        }
+
+        _isBroken = true;
         _isTriggered = false;
-        SetPhysicsProcess(false);
         if (_collisionShape != null)
         {
             _collisionShape.Disabled = true;
