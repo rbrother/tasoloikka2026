@@ -19,10 +19,18 @@ Build a Windows desktop 2D platformer with solid movement, level content, and an
 
 ## Current Status
 - Godot project opens successfully.
+- C# build pipeline is working in Godot 4.6.1 Mono.
 - Basic playable prototype exists:
   - yellow player block
   - green ground
-  - movement + jump baseline
+  - A/D movement
+  - Space jump
+  - gravity working
+- Player feel pass implemented:
+  - ground/air acceleration and deceleration
+  - jump cut (short hop when releasing jump)
+  - fall gravity multiplier
+  - max fall speed cap
 
 ## Suggested Project Architecture
 - `scenes/`
@@ -53,7 +61,11 @@ Build a Windows desktop 2D platformer with solid movement, level content, and an
 
 ## Development Milestones
 1. **Foundation polish (2-4 days)**
-   - Finalize input actions (`move_left`, `move_right`, `jump`), tune movement/jump feel.
+   - Completed:
+   - C# scripts build and run in editor.
+   - Custom input actions implemented (`move_left`, `move_right`, `jump`).
+   - Movement/jump/gravity baseline verified in play mode.
+   - Movement-feel tuning pass implemented in `PlayerController.cs`.
 2. **Vertical slice (1-2 weeks)**
    - One complete level, one enemy type, hazards, collectible, level finish flow.
 3. **Content pipeline (1 week)**
@@ -64,7 +76,7 @@ Build a Windows desktop 2D platformer with solid movement, level content, and an
    - Effects, balancing, bug fixes, Windows export package.
 
 ## Immediate Next Steps
-1. Add custom input actions and switch scripts to them.
-2. Replace placeholder blocks with sprite + animation setup.
-3. Add checkpoint/death/restart gameplay loop.
-4. Add first enemy scene with simple patrol AI.
+1. Replace placeholder blocks with sprite + animation setup.
+2. Add checkpoint/death/restart gameplay loop.
+3. Add first enemy scene with simple patrol AI.
+4. Start building a first complete level flow (start -> challenge -> finish).

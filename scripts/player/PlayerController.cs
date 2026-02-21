@@ -4,8 +4,15 @@ namespace Tasoloikka2026.Player;
 public partial class PlayerController : CharacterBody2D
 {
     [Export] public float MoveSpeed = 140.0f;
+    [Export] public float GroundAcceleration = 1200.0f;
+    [Export] public float GroundDeceleration = 1400.0f;
+    [Export] public float AirAcceleration = 900.0f;
+    [Export] public float AirDeceleration = 700.0f;
     [Export] public float JumpVelocity = -260.0f;
     [Export] public float GravityScale = 1.0f;
+    [Export] public float FallGravityMultiplier = 1.2f;
+    [Export] public float JumpCutMultiplier = 2.0f;
+    [Export] public float MaxFallSpeed = 520.0f;
     [Export] public float CoyoteTime = 0.1f;
     [Export] public float JumpBufferTime = 0.1f;
 
@@ -22,8 +29,9 @@ public partial class PlayerController : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         var dt = (float)delta;
+        var isOnFloor = IsOnFloor();
 
-        if (IsOnFloor())
+        if (isOnFloor)
         {
             _coyoteTimer = CoyoteTime;
         }
@@ -42,11 +50,23 @@ public partial class PlayerController : CharacterBody2D
         }
 
         var direction = Input.GetAxis("move_left", "move_right");
-        Velocity = new Vector2(direction * MoveSpeed, Velocity.Y);
+        var targetSpeed = direction * MoveSpeed;
+        var acceleration = direction == 0.0f
+            ? (isOnFloor ? GroundDeceleration : AirDeceleration)
+            : (isOnFloor ? GroundAcceleration : AirAcceleration);
+        var newXVelocity = Mathf.MoveToward(Velocity.X, targetSpeed, acceleration * dt);
+        Velocity = new Vector2(newXVelocity, Velocity.Y);
 
-        if (!IsOnFloor())
+        if (!isOnFloor)
         {
-            Velocity += new Vector2(0.0f, _defaultGravity * GravityScale * dt);
+            var gravityMultiplier = FallGravityMultiplier;
+            if (Velocity.Y < 0.0f && !Input.IsActionPressed("jump"))
+            {
+                gravityMultiplier = JumpCutMultiplier;
+            }
+
+            Velocity += new Vector2(0.0f, _defaultGravity * GravityScale * gravityMultiplier * dt);
+            Velocity = new Vector2(Velocity.X, Mathf.Min(Velocity.Y, MaxFallSpeed));
         }
 
         if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)
