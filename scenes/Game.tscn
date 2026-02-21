@@ -11,6 +11,6 @@ script = ExtResource("1_7ox2f")
 [node name="Level" parent="." unique_id=610687939 instance=ExtResource("2_q8x31")]
 
 [node name="Player" parent="." unique_id=1278576380 instance=ExtResource("3_4w11n")]
-position = Vector2(92, 82)
+position = Vector2(220, 892)
 
 [node name="HUD" parent="." unique_id=512254507 instance=ExtResource("4_42vsa")]

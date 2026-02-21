@@ -51,6 +51,18 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_lha1o")
 animation = &"idle"
 
+[node name="ChargeIndicator" type="Node2D" parent="."]
+position = Vector2(26, -60)
+visible = false
+
+[node name="Back" type="Polygon2D" parent="ChargeIndicator"]
+color = Color(0.08, 0.08, 0.08, 0.85)
+polygon = PackedVector2Array(-1, -1, 27, -1, 27, 7, -1, 7)
+
+[node name="Fill" type="Polygon2D" parent="ChargeIndicator"]
+color = Color(1, 0.88, 0.22, 1)
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 6, 0, 6)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 enabled = true
 position_smoothing_enabled = true
