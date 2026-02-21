@@ -30,12 +30,18 @@ public partial class PlayerController : CharacterBody2D
     private AnimatedSprite2D? _animatedSprite;
     private PackedScene? _stoneScene;
     private PackedScene? _explosionScene;
+    private AudioStreamPlayer2D? _jumpSfx;
+    private AudioStreamPlayer2D? _landSfx;
+    private AudioStreamPlayer2D? _throwSfx;
+    private AudioStreamPlayer? _deathSfx;
+    private AudioStreamPlayer? _winSfx;
     private Node2D? _chargeIndicator;
     private Polygon2D? _chargeFill;
     private int _facing = 1;
     private bool _isChargingThrow;
     private float _throwChargeTimer;
     private bool _isDead;
+    private bool _wasOnFloor;
 
     public override void _Ready()
     {
@@ -45,12 +51,18 @@ public partial class PlayerController : CharacterBody2D
         _animatedSprite?.Play("idle");
         _stoneScene = GD.Load<PackedScene>("res://scenes/projectiles/Stone.tscn");
         _explosionScene = GD.Load<PackedScene>("res://scenes/effects/Explosion.tscn");
+        _jumpSfx = CreateSfxPlayer("res://assets/audio/sfx/jump.ogg", -7.0f);
+        _landSfx = CreateSfxPlayer("res://assets/audio/sfx/land.ogg", -6.0f);
+        _throwSfx = CreateSfxPlayer("res://assets/audio/sfx/throw_stone.ogg", -5.0f);
+        _deathSfx = CreateUiSfxPlayer("res://assets/audio/sfx/death_sad_stinger.wav", -4.0f);
+        _winSfx = CreateUiSfxPlayer("res://assets/audio/sfx/win_happy_melody.wav", -3.0f);
         _chargeIndicator = GetNodeOrNull<Node2D>("ChargeIndicator");
         _chargeFill = GetNodeOrNull<Polygon2D>("ChargeIndicator/Fill");
         if (_chargeIndicator != null)
         {
             _chargeIndicator.Visible = false;
         }
+        _wasOnFloor = IsOnFloor();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -108,11 +120,20 @@ public partial class PlayerController : CharacterBody2D
             Velocity = new Vector2(Velocity.X, JumpVelocity);
             _jumpBufferTimer = 0.0f;
             _coyoteTimer = 0.0f;
+            _jumpSfx?.Play();
         }
 
         UpdateAnimation();
         UpdateChargeIndicator();
         MoveAndSlide();
+
+        var nowOnFloor = IsOnFloor();
+        if (!_wasOnFloor && nowOnFloor)
+        {
+            _landSfx?.Play();
+        }
+
+        _wasOnFloor = nowOnFloor;
     }
 
     private void HandleThrowInput(float dt)
@@ -153,9 +174,44 @@ public partial class PlayerController : CharacterBody2D
         var throwDirection = new Vector2(_facing * Mathf.Cos(throwAngle), -Mathf.Sin(throwAngle)).Normalized();
         var inheritedVelocity = new Vector2(Velocity.X * 0.35f, 0.0f);
         stone.Launch(throwDirection * speed + inheritedVelocity);
+        _throwSfx?.Play();
 
         var parentNode = GetTree().CurrentScene ?? GetParent();
         parentNode?.AddChild(stone);
+    }
+
+    private AudioStreamPlayer2D? CreateSfxPlayer(string streamPath, float volumeDb)
+    {
+        var stream = GD.Load<AudioStream>(streamPath);
+        if (stream == null)
+        {
+            return null;
+        }
+
+        var player = new AudioStreamPlayer2D
+        {
+            Stream = stream,
+            VolumeDb = volumeDb
+        };
+        AddChild(player);
+        return player;
+    }
+
+    private AudioStreamPlayer? CreateUiSfxPlayer(string streamPath, float volumeDb)
+    {
+        var stream = GD.Load<AudioStream>(streamPath);
+        if (stream == null)
+        {
+            return null;
+        }
+
+        var player = new AudioStreamPlayer
+        {
+            Stream = stream,
+            VolumeDb = volumeDb
+        };
+        AddChild(player);
+        return player;
     }
 
     public async void Die()
@@ -166,6 +222,7 @@ public partial class PlayerController : CharacterBody2D
         }
 
         _isDead = true;
+        _deathSfx?.Play();
         SpawnExplosion();
         Visible = false;
         SetPhysicsProcess(false);
@@ -184,6 +241,7 @@ public partial class PlayerController : CharacterBody2D
         }
 
         _isDead = true;
+        _winSfx?.Play();
         SetPhysicsProcess(false);
         SetProcess(false);
         ShowWinText();

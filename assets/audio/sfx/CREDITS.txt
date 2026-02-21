@@ -1,0 +1,13 @@
+﻿Sound effects source: Kenney - Impact Sounds
+Source URL: https://kenney.nl/assets/impact-sounds
+License: Creative Commons CC0 1.0 (public domain)
+
+Mapped files:
+- throw_stone.ogg -> impactWood_light_002.ogg
+- jump.ogg -> footstep_grass_001.ogg
+- land.ogg -> impactSoft_medium_003.ogg
+- explosion.ogg -> impactPlate_heavy_004.ogg
+
+Locally generated original sounds (this project):
+- win_happy_melody.wav
+- death_sad_stinger.wav
