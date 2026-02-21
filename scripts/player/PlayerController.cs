@@ -150,6 +150,11 @@ public partial class PlayerController : CharacterBody2D
         parentNode?.AddChild(stone);
     }
 
+    public void Die()
+    {
+        GetTree().ReloadCurrentScene();
+    }
+
     private float GetChargeRatio()
     {
         if (MaxThrowChargeTime <= 0.0f)

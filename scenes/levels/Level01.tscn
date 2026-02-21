@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c6qpkdokf4u5h" path="res://assets/tilesets/grass_strip_wind_1.png" id="2_r6jsn"]
 [ext_resource type="Texture2D" uid="uid://bkmdssxitg6ue" path="res://assets/tilesets/grass_strip_wind_2.png" id="3_wje17"]
 [ext_resource type="Texture2D" uid="uid://bgyv51ixoc0nt" path="res://assets/tilesets/grass_strip_wind_3.png" id="4_e5n2m"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/BirdEnemy.tscn" id="5_moxd0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -42,3 +43,6 @@ shape = SubResource("RectangleShape2D_u5y7k")
 sprite_frames = SubResource("SpriteFrames_7lt0v")
 animation = &"wind"
 autoplay = "wind"
+
+[node name="BirdEnemy" parent="." instance=ExtResource("5_moxd0")]
+position = Vector2(980, 760)
