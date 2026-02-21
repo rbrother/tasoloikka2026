@@ -1,29 +1,14 @@
 [gd_scene format=3 uid="uid://8b12xpatxnxa"]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/futuristic_city_far_1024x1080.png" id="1_hq48q"]
+[ext_resource type="Texture2D" uid="uid://fdu8vptpunhl" path="res://assets/backgrounds/futuristic_city_far_1024x1080.png" id="1_hq48q"]
 [ext_resource type="Texture2D" uid="uid://c6qpkdokf4u5h" path="res://assets/tilesets/grass_strip_wind_1.png" id="2_r6jsn"]
 [ext_resource type="Texture2D" uid="uid://bkmdssxitg6ue" path="res://assets/tilesets/grass_strip_wind_2.png" id="3_wje17"]
 [ext_resource type="Texture2D" uid="uid://bgyv51ixoc0nt" path="res://assets/tilesets/grass_strip_wind_3.png" id="4_e5n2m"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/BirdEnemy.tscn" id="5_moxd0"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/futuristic_city_near_1024x1080.png" id="6_aa6kc"]
+[ext_resource type="Texture2D" uid="uid://bvmp4iaevra07" path="res://assets/backgrounds/futuristic_city_near_1024x1080.png" id="6_aa6kc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step1"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step2"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step3"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step4"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step5"]
-size = Vector2(320, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7lt0v"]
 animations = [{
@@ -42,37 +27,51 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step1"]
+size = Vector2(220, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step2"]
+size = Vector2(220, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step3"]
+size = Vector2(220, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step4"]
+size = Vector2(220, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step5"]
+size = Vector2(320, 40)
+
 [node name="Level01" type="Node2D" unique_id=1873508809]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-scroll_base_scale = Vector2(1, 1)
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1983599130]
 layer = -20
 
-[node name="FarLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="FarLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1555984586]
 motion_scale = Vector2(0.12, 0.05)
 motion_mirroring = Vector2(2048, 0)
 
-[node name="FarSprite" type="Sprite2D" parent="ParallaxBackground/FarLayer"]
-centered = false
+[node name="FarSprite" type="Sprite2D" parent="ParallaxBackground/FarLayer" unique_id=1482715966]
 texture = ExtResource("1_hq48q")
+centered = false
 
-[node name="FarSprite2" type="Sprite2D" parent="ParallaxBackground/FarLayer"]
+[node name="FarSprite2" type="Sprite2D" parent="ParallaxBackground/FarLayer" unique_id=1273036659]
 position = Vector2(1024, 0)
-centered = false
 texture = ExtResource("1_hq48q")
+centered = false
 
-[node name="NearLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="NearLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=2072907326]
 motion_scale = Vector2(0.22, 0.1)
 motion_mirroring = Vector2(2048, 0)
 
-[node name="NearSprite" type="Sprite2D" parent="ParallaxBackground/NearLayer"]
-centered = false
+[node name="NearSprite" type="Sprite2D" parent="ParallaxBackground/NearLayer" unique_id=1878880884]
 texture = ExtResource("6_aa6kc")
+centered = false
 
-[node name="NearSprite2" type="Sprite2D" parent="ParallaxBackground/NearLayer"]
+[node name="NearSprite2" type="Sprite2D" parent="ParallaxBackground/NearLayer" unique_id=1747579527]
 position = Vector2(1024, 0)
-centered = false
 texture = ExtResource("6_aa6kc")
+centered = false
 
 [node name="Ground" type="StaticBody2D" parent="." unique_id=1862849188]
 position = Vector2(960, 924)
@@ -85,75 +84,81 @@ sprite_frames = SubResource("SpriteFrames_7lt0v")
 animation = &"wind"
 autoplay = "wind"
 
-[node name="Step1" type="StaticBody2D" parent="."]
+[node name="Step1" type="StaticBody2D" parent="." unique_id=2050425843]
 position = Vector2(520, 820)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1" unique_id=1540862989]
 shape = SubResource("RectangleShape2D_step1")
 
-[node name="Body" type="Polygon2D" parent="Step1"]
+[node name="Body" type="Polygon2D" parent="Step1" unique_id=474782773]
 color = Color(0.47, 0.33, 0.2, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
 
-[node name="GrassTop" type="Polygon2D" parent="Step1"]
+[node name="GrassTop" type="Polygon2D" parent="Step1" unique_id=2136551476]
 color = Color(0.34, 0.72, 0.3, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
 
-[node name="Step2" type="StaticBody2D" parent="."]
+[node name="Step2" type="StaticBody2D" parent="." unique_id=1259601029]
 position = Vector2(730, 730)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2" unique_id=1179229022]
 shape = SubResource("RectangleShape2D_step2")
 
-[node name="Body" type="Polygon2D" parent="Step2"]
+[node name="Body" type="Polygon2D" parent="Step2" unique_id=1006917052]
 color = Color(0.47, 0.33, 0.2, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
 
-[node name="GrassTop" type="Polygon2D" parent="Step2"]
+[node name="GrassTop" type="Polygon2D" parent="Step2" unique_id=1586453509]
 color = Color(0.34, 0.72, 0.3, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
 
-[node name="Step3" type="StaticBody2D" parent="."]
+[node name="Step3" type="StaticBody2D" parent="." unique_id=971039524]
 position = Vector2(940, 640)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3" unique_id=1205003827]
 shape = SubResource("RectangleShape2D_step3")
 
-[node name="Body" type="Polygon2D" parent="Step3"]
+[node name="Body" type="Polygon2D" parent="Step3" unique_id=573982761]
 color = Color(0.47, 0.33, 0.2, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
 
-[node name="GrassTop" type="Polygon2D" parent="Step3"]
+[node name="GrassTop" type="Polygon2D" parent="Step3" unique_id=707573893]
 color = Color(0.34, 0.72, 0.3, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
 
-[node name="Step4" type="StaticBody2D" parent="."]
+[node name="Step4" type="StaticBody2D" parent="." unique_id=1133382398]
 position = Vector2(1150, 550)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4" unique_id=414030902]
 shape = SubResource("RectangleShape2D_step4")
 
-[node name="Body" type="Polygon2D" parent="Step4"]
+[node name="Body" type="Polygon2D" parent="Step4" unique_id=1453245393]
 color = Color(0.47, 0.33, 0.2, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
 
-[node name="GrassTop" type="Polygon2D" parent="Step4"]
+[node name="GrassTop" type="Polygon2D" parent="Step4" unique_id=1513732638]
 color = Color(0.34, 0.72, 0.3, 1)
 polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
 
-[node name="Step5" type="StaticBody2D" parent="."]
+[node name="Step5" type="StaticBody2D" parent="." unique_id=599914109]
 position = Vector2(1410, 470)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5" unique_id=1473993671]
 shape = SubResource("RectangleShape2D_step5")
 
-[node name="Body" type="Polygon2D" parent="Step5"]
+[node name="Body" type="Polygon2D" parent="Step5" unique_id=1214348056]
 color = Color(0.47, 0.33, 0.2, 1)
 polygon = PackedVector2Array(-160, -20, 160, -20, 160, 20, -160, 20)
 
-[node name="GrassTop" type="Polygon2D" parent="Step5"]
+[node name="GrassTop" type="Polygon2D" parent="Step5" unique_id=987562779]
 color = Color(0.34, 0.72, 0.3, 1)
 polygon = PackedVector2Array(-160, -20, 160, -20, 160, -12, -160, -12)
 
-[node name="BirdEnemy" parent="." instance=ExtResource("5_moxd0")]
+[node name="BirdEnemy" parent="." unique_id=260061340 instance=ExtResource("5_moxd0")]
 position = Vector2(980, 760)
+
+[node name="BirdEnemy2" parent="." unique_id=361535751 instance=ExtResource("5_moxd0")]
+position = Vector2(680, 603)
+
+[node name="BirdEnemy3" parent="." unique_id=508887717 instance=ExtResource("5_moxd0")]
+position = Vector2(1385, 338)
