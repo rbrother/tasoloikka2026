@@ -1,5 +1,4 @@
 ﻿using Godot;
-
 namespace Tasoloikka2026.Player;
 
 public partial class PlayerController : CharacterBody2D
@@ -12,6 +11,13 @@ public partial class PlayerController : CharacterBody2D
 
     private float _coyoteTimer;
     private float _jumpBufferTimer;
+    private float _defaultGravity;
+
+    public override void _Ready()
+    {
+        EnsureInputActions();
+        _defaultGravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -38,11 +44,9 @@ public partial class PlayerController : CharacterBody2D
         var direction = Input.GetAxis("move_left", "move_right");
         Velocity = new Vector2(direction * MoveSpeed, Velocity.Y);
 
-        // CharacterBody2D gravity comes from project/default physics settings.
-        var gravity = GetGravity();
         if (!IsOnFloor())
         {
-            Velocity += gravity * GravityScale * dt;
+            Velocity += new Vector2(0.0f, _defaultGravity * GravityScale * dt);
         }
 
         if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)
@@ -53,5 +57,34 @@ public partial class PlayerController : CharacterBody2D
         }
 
         MoveAndSlide();
+    }
+
+    private static void EnsureInputActions()
+    {
+        EnsureActionWithKey("move_left", Key.A);
+        EnsureActionWithKey("move_right", Key.D);
+        EnsureActionWithKey("jump", Key.Space);
+    }
+
+    private static void EnsureActionWithKey(string action, Key key)
+    {
+        if (!InputMap.HasAction(action))
+        {
+            InputMap.AddAction(action);
+        }
+
+        foreach (var existingEvent in InputMap.ActionGetEvents(action))
+        {
+            if (existingEvent is InputEventKey existingKey && existingKey.PhysicalKeycode == key)
+            {
+                return;
+            }
+        }
+
+        var keyEvent = new InputEventKey
+        {
+            PhysicalKeycode = key
+        };
+        InputMap.ActionAddEvent(action, keyEvent);
     }
 }
