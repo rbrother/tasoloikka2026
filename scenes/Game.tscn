@@ -1,17 +1,16 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://b2fv0j2ecdjjw"]
 
-[ext_resource type="Script" path="res://scripts/core/GameManager.cs" id="1_7ox2f"]
+[ext_resource type="Script" uid="uid://d0yjmcd4hptdd" path="res://scripts/core/GameManager.cs" id="1_7ox2f"]
 [ext_resource type="PackedScene" path="res://scenes/levels/Level01.tscn" id="2_q8x31"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_4w11n"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="4_42vsa"]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=955710506]
 script = ExtResource("1_7ox2f")
 
-[node name="Level" parent="." instance=ExtResource("2_q8x31")]
+[node name="Level" parent="." unique_id=610687939 instance=ExtResource("2_q8x31")]
 
-[node name="Player" parent="." instance=ExtResource("3_4w11n")]
-position = Vector2(40, 80)
+[node name="Player" parent="." unique_id=1278576380 instance=ExtResource("3_4w11n")]
+position = Vector2(92, 82)
 
-[node name="HUD" parent="." instance=ExtResource("4_42vsa")]
-
+[node name="HUD" parent="." unique_id=512254507 instance=ExtResource("4_42vsa")]

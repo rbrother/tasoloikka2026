@@ -1,18 +1,20 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1_f82ys"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/player_idle_front.png" id="2_05cmv"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_front_1.png" id="3_i4dlh"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_front_2.png" id="4_0uqii"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_idle_right.png" id="2_wwnci"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_1.png" id="3_oyrt2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_2.png" id="4_1me6f"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_3.png" id="5_6jm3n"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_4.png" id="6_0xov3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nkqao"]
-size = Vector2(12, 24)
+size = Vector2(24, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lha1o"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_05cmv")
+"texture": ExtResource("2_wwnci")
 }],
 "loop": true,
 "name": &"idle",
@@ -20,25 +22,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_i4dlh")
+"texture": ExtResource("3_oyrt2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_0uqii")
+"texture": ExtResource("4_1me6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6jm3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_0xov3")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 8.0
+"speed": 10.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_f82ys")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12)
+position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_nkqao")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -32)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_lha1o")
 animation = &"idle"
 

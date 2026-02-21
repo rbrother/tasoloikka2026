@@ -3,23 +3,24 @@ namespace Tasoloikka2026.Player;
 
 public partial class PlayerController : CharacterBody2D
 {
-    [Export] public float MoveSpeed = 140.0f;
-    [Export] public float GroundAcceleration = 1200.0f;
-    [Export] public float GroundDeceleration = 1400.0f;
-    [Export] public float AirAcceleration = 900.0f;
-    [Export] public float AirDeceleration = 700.0f;
-    [Export] public float JumpVelocity = -260.0f;
-    [Export] public float GravityScale = 1.0f;
-    [Export] public float FallGravityMultiplier = 1.2f;
-    [Export] public float JumpCutMultiplier = 2.0f;
-    [Export] public float MaxFallSpeed = 520.0f;
-    [Export] public float CoyoteTime = 0.1f;
-    [Export] public float JumpBufferTime = 0.1f;
+    [Export] public float MoveSpeed = 130.0f;
+    [Export] public float GroundAcceleration = 900.0f;
+    [Export] public float GroundDeceleration = 1000.0f;
+    [Export] public float AirAcceleration = 700.0f;
+    [Export] public float AirDeceleration = 500.0f;
+    [Export] public float JumpVelocity = -360.0f;
+    [Export] public float GravityScale = 0.62f;
+    [Export] public float FallGravityMultiplier = 1.05f;
+    [Export] public float JumpCutMultiplier = 1.35f;
+    [Export] public float MaxFallSpeed = 330.0f;
+    [Export] public float CoyoteTime = 0.12f;
+    [Export] public float JumpBufferTime = 0.12f;
 
     private float _coyoteTimer;
     private float _jumpBufferTimer;
     private float _defaultGravity;
     private AnimatedSprite2D? _animatedSprite;
+    private int _facing = 1;
 
     public override void _Ready()
     {
@@ -89,6 +90,18 @@ public partial class PlayerController : CharacterBody2D
         {
             return;
         }
+
+        if (Velocity.X > 2.0f)
+        {
+            _facing = 1;
+        }
+        else if (Velocity.X < -2.0f)
+        {
+            _facing = -1;
+        }
+
+        // Art is authored facing right, flip horizontally when moving left.
+        _animatedSprite.FlipH = _facing < 0;
 
         var shouldWalk = Mathf.Abs(Velocity.X) > 5.0f && IsOnFloor();
         var targetAnimation = shouldWalk ? "walk" : "idle";
