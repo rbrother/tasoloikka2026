@@ -1,17 +1,44 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://8b12xpatxnxa"]
+
+[ext_resource type="Texture2D" uid="uid://d0horvpbxlw7n" path="res://assets/backgrounds/sky_funny_clouds_1920x1080.png" id="1_hq48q"]
+[ext_resource type="Texture2D" uid="uid://c6qpkdokf4u5h" path="res://assets/tilesets/grass_strip_wind_1.png" id="2_r6jsn"]
+[ext_resource type="Texture2D" uid="uid://bkmdssxitg6ue" path="res://assets/tilesets/grass_strip_wind_2.png" id="3_wje17"]
+[ext_resource type="Texture2D" uid="uid://bgyv51ixoc0nt" path="res://assets/tilesets/grass_strip_wind_3.png" id="4_e5n2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
-size = Vector2(640, 32)
+size = Vector2(1920, 64)
 
-[node name="Level01" type="Node2D"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_7lt0v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r6jsn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wje17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_e5n2m")
+}],
+"loop": true,
+"name": &"wind",
+"speed": 4.0
+}]
 
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(320, 164)
+[node name="Level01" type="Node2D" unique_id=1873508809]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+[node name="Background" type="Sprite2D" parent="." unique_id=2121911332]
+z_index = -10
+position = Vector2(953, 567)
+texture = ExtResource("1_hq48q")
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1862849188]
+position = Vector2(960, 924)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1071197492]
 shape = SubResource("RectangleShape2D_u5y7k")
 
-[node name="GroundVisual" type="Polygon2D" parent="Ground"]
-color = Color(0.2, 0.28, 0.2, 1)
-polygon = PackedVector2Array(-320, -16, 320, -16, 320, 16, -320, 16)
-
+[node name="GrassVisual" type="AnimatedSprite2D" parent="Ground" unique_id=1913340031]
+sprite_frames = SubResource("SpriteFrames_7lt0v")
+animation = &"wind"
+autoplay = "wind"
