@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/levels/Level01.tscn" id="2_q8x31"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_4w11n"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="4_42vsa"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="5_rm2np"]
 
 [node name="Game" type="Node2D" unique_id=955710506]
 script = ExtResource("1_7ox2f")
@@ -14,3 +15,5 @@ script = ExtResource("1_7ox2f")
 position = Vector2(220, 892)
 
 [node name="HUD" parent="." unique_id=512254507 instance=ExtResource("4_42vsa")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("5_rm2np")]

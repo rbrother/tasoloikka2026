@@ -11,6 +11,10 @@ public partial class PlayerController : CharacterBody2D
     [Export] public float AirAcceleration = 700.0f;
     [Export] public float AirDeceleration = 500.0f;
     [Export] public float JumpVelocity = -360.0f;
+    [Export] public float WallSlideSpeed = 120.0f;
+    [Export] public float WallJumpHorizontalSpeed = 280.0f;
+    [Export] public float WallJumpVerticalVelocity = -360.0f;
+    [Export] public float WallJumpControlLockTime = 0.14f;
     [Export] public float GravityScale = 0.62f;
     [Export] public float FallGravityMultiplier = 1.05f;
     [Export] public float JumpCutMultiplier = 1.35f;
@@ -43,6 +47,7 @@ public partial class PlayerController : CharacterBody2D
     private bool _isDead;
     private bool _wasOnFloor;
     private float _dropThroughTimer;
+    private float _wallJumpLockTimer;
 
     public override void _Ready()
     {
@@ -88,8 +93,9 @@ public partial class PlayerController : CharacterBody2D
             _coyoteTimer -= dt;
         }
 
-        var dropPressed = isOnFloor && Input.IsActionPressed("move_down") && Input.IsActionJustPressed("jump");
-        if (!dropPressed && Input.IsActionJustPressed("jump"))
+        var jumpPressed = Input.IsActionJustPressed("jump");
+        var dropPressed = isOnFloor && Input.IsActionPressed("move_down") && jumpPressed;
+        if (!dropPressed && jumpPressed)
         {
             _jumpBufferTimer = JumpBufferTime;
         }
@@ -98,7 +104,12 @@ public partial class PlayerController : CharacterBody2D
             _jumpBufferTimer -= dt;
         }
 
-        var direction = Input.GetAxis("move_left", "move_right");
+        if (_wallJumpLockTimer > 0.0f)
+        {
+            _wallJumpLockTimer -= dt;
+        }
+
+        var direction = _wallJumpLockTimer > 0.0f ? 0.0f : Input.GetAxis("move_left", "move_right");
         var targetSpeed = direction * MoveSpeed;
         var acceleration = direction == 0.0f
             ? (isOnFloor ? GroundDeceleration : AirDeceleration)
@@ -118,7 +129,28 @@ public partial class PlayerController : CharacterBody2D
             Velocity = new Vector2(Velocity.X, Mathf.Min(Velocity.Y, MaxFallSpeed));
         }
 
-        if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)
+        var wallSliding = IsWallSliding(direction, isOnFloor);
+        if (wallSliding)
+        {
+            Velocity = new Vector2(Velocity.X, Mathf.Min(Velocity.Y, WallSlideSpeed));
+        }
+
+        if (jumpPressed && wallSliding)
+        {
+            var wallNormal = GetWallNormal();
+            var jumpAwayX = wallNormal.X;
+            if (Mathf.IsZeroApprox(jumpAwayX))
+            {
+                jumpAwayX = _facing > 0 ? -1.0f : 1.0f;
+            }
+
+            Velocity = new Vector2(jumpAwayX * WallJumpHorizontalSpeed, WallJumpVerticalVelocity);
+            _wallJumpLockTimer = WallJumpControlLockTime;
+            _jumpBufferTimer = 0.0f;
+            _coyoteTimer = 0.0f;
+            _jumpSfx?.Play();
+        }
+        else if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)
         {
             Velocity = new Vector2(Velocity.X, JumpVelocity);
             _jumpBufferTimer = 0.0f;
@@ -178,6 +210,23 @@ public partial class PlayerController : CharacterBody2D
             _coyoteTimer = 0.0f;
             Velocity = new Vector2(Velocity.X, 70.0f);
         }
+    }
+
+    private bool IsWallSliding(float direction, bool isOnFloor)
+    {
+        if (isOnFloor || !IsOnWall() || Velocity.Y <= 0.0f)
+        {
+            return false;
+        }
+
+        var wallNormal = GetWallNormal();
+        if (Mathf.IsZeroApprox(wallNormal.X))
+        {
+            return false;
+        }
+
+        // Require movement input toward the wall so wall-slide feels intentional.
+        return direction * -wallNormal.X > 0.1f;
     }
 
     private void ThrowStone()
