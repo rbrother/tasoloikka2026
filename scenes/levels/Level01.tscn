@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bgyv51ixoc0nt" path="res://assets/tilesets/grass_strip_wind_3.png" id="4_e5n2m"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/BirdEnemy.tscn" id="5_moxd0"]
 [ext_resource type="Texture2D" uid="uid://bvmp4iaevra07" path="res://assets/backgrounds/futuristic_city_near_1024x1080.png" id="6_aa6kc"]
+[ext_resource type="PackedScene" path="res://scenes/objects/FinishDoor.tscn" id="7_1x37v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -162,3 +163,6 @@ position = Vector2(680, 603)
 
 [node name="BirdEnemy3" parent="." unique_id=508887717 instance=ExtResource("5_moxd0")]
 position = Vector2(1385, 338)
+
+[node name="FinishDoor" parent="." unique_id=1857097189 instance=ExtResource("7_1x37v")]
+position = Vector2(1543, 434)

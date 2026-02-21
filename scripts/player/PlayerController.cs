@@ -176,6 +176,19 @@ public partial class PlayerController : CharacterBody2D
         GetTree().ReloadCurrentScene();
     }
 
+    public void Win()
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        _isDead = true;
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        ShowWinText();
+    }
+
     private void SpawnExplosion()
     {
         if (_explosionScene == null)
@@ -210,6 +223,32 @@ public partial class PlayerController : CharacterBody2D
         label.AddThemeFontSizeOverride("font_size", 200);
         label.AddThemeColorOverride("font_outline_color", new Color(0, 0, 0, 0.4f));
         label.AddThemeConstantOverride("outline_size", 20);
+
+        overlay.AddChild(label);
+        sceneRoot.AddChild(overlay);
+    }
+
+    private void ShowWinText()
+    {
+        var sceneRoot = GetTree().CurrentScene;
+        if (sceneRoot == null)
+        {
+            return;
+        }
+
+        var overlay = new CanvasLayer();
+        var label = new Label
+        {
+            Text = "You Win!",
+            Modulate = new Color(0.15f, 1.0f, 0.32f, 0.95f),
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        label.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        label.AddThemeFontSizeOverride("font_size", 180);
+        label.AddThemeColorOverride("font_outline_color", new Color(0.02f, 0.08f, 0.02f, 0.8f));
+        label.AddThemeConstantOverride("outline_size", 18);
 
         overlay.AddChild(label);
         sceneRoot.AddChild(overlay);
