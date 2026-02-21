@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/BreakablePlatform.tscn" id="10_8h9v1"]
 [ext_resource type="PackedScene" path="res://scenes/objects/MovingPlatform.tscn" id="11_f2j8t"]
 [ext_resource type="PackedScene" path="res://scenes/objects/BouncePad.tscn" id="12_o3u7l"]
+[ext_resource type="PackedScene" path="res://scenes/objects/StepPlatform.tscn" id="13_cw8t1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5y7k"]
 size = Vector2(1920, 64)
@@ -32,21 +33,6 @@ animations = [{
 "name": &"wind",
 "speed": 4.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step1"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step2"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step3"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step4"]
-size = Vector2(220, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_step5"]
-size = Vector2(320, 40)
 
 [node name="Level01" type="Node2D" unique_id=1873508809]
 
@@ -90,75 +76,17 @@ sprite_frames = SubResource("SpriteFrames_7lt0v")
 animation = &"wind"
 autoplay = "wind"
 
-[node name="Step1" type="StaticBody2D" parent="." unique_id=2050425843]
+[node name="Step1" parent="." unique_id=2050425843 instance=ExtResource("13_cw8t1")]
 position = Vector2(520, 820)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1" unique_id=1540862989]
-shape = SubResource("RectangleShape2D_step1")
-
-[node name="Body" type="Polygon2D" parent="Step1" unique_id=474782773]
-color = Color(0.47, 0.33, 0.2, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
-
-[node name="GrassTop" type="Polygon2D" parent="Step1" unique_id=2136551476]
-color = Color(0.34, 0.72, 0.3, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
-
-[node name="Step2" type="StaticBody2D" parent="." unique_id=1259601029]
+[node name="Step2" parent="." unique_id=1259601029 instance=ExtResource("13_cw8t1")]
 position = Vector2(730, 730)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2" unique_id=1179229022]
-shape = SubResource("RectangleShape2D_step2")
-
-[node name="Body" type="Polygon2D" parent="Step2" unique_id=1006917052]
-color = Color(0.47, 0.33, 0.2, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
-
-[node name="GrassTop" type="Polygon2D" parent="Step2" unique_id=1586453509]
-color = Color(0.34, 0.72, 0.3, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
-
-[node name="Step3" type="StaticBody2D" parent="." unique_id=971039524]
+[node name="Step3" parent="." unique_id=971039524 instance=ExtResource("13_cw8t1")]
 position = Vector2(940, 640)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3" unique_id=1205003827]
-shape = SubResource("RectangleShape2D_step3")
-
-[node name="Body" type="Polygon2D" parent="Step3" unique_id=573982761]
-color = Color(0.47, 0.33, 0.2, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
-
-[node name="GrassTop" type="Polygon2D" parent="Step3" unique_id=707573893]
-color = Color(0.34, 0.72, 0.3, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
-
-[node name="Step4" type="StaticBody2D" parent="." unique_id=1133382398]
+[node name="Step4" parent="." unique_id=1133382398 instance=ExtResource("13_cw8t1")]
 position = Vector2(1150, 550)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4" unique_id=414030902]
-shape = SubResource("RectangleShape2D_step4")
-
-[node name="Body" type="Polygon2D" parent="Step4" unique_id=1453245393]
-color = Color(0.47, 0.33, 0.2, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, 20, -110, 20)
-
-[node name="GrassTop" type="Polygon2D" parent="Step4" unique_id=1513732638]
-color = Color(0.34, 0.72, 0.3, 1)
-polygon = PackedVector2Array(-110, -20, 110, -20, 110, -12, -110, -12)
-
-[node name="Step5" type="StaticBody2D" parent="." unique_id=599914109]
+[node name="Step5" parent="." unique_id=599914109 instance=ExtResource("13_cw8t1")]
 position = Vector2(1410, 470)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5" unique_id=1473993671]
-shape = SubResource("RectangleShape2D_step5")
-
-[node name="Body" type="Polygon2D" parent="Step5" unique_id=1214348056]
-color = Color(0.47, 0.33, 0.2, 1)
-polygon = PackedVector2Array(-160, -20, 160, -20, 160, 20, -160, 20)
-
-[node name="GrassTop" type="Polygon2D" parent="Step5" unique_id=987562779]
-color = Color(0.34, 0.72, 0.3, 1)
-polygon = PackedVector2Array(-160, -20, 160, -20, 160, -12, -160, -12)
+scale = Vector2(1.454545, 1)
 
 [node name="BirdEnemy" parent="." unique_id=260061340 instance=ExtResource("5_moxd0")]
 position = Vector2(980, 760)
@@ -180,7 +108,6 @@ position = Vector2(1710, 589)
 
 [node name="BreakablePlatform" parent="." unique_id=1268665112 instance=ExtResource("10_8h9v1")]
 position = Vector2(760, 836)
-BreakDelaySeconds = 3.0
 
 [node name="MovingPlatform" parent="." unique_id=871246499 instance=ExtResource("11_f2j8t")]
 position = Vector2(430, 610)

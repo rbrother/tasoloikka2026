@@ -5,15 +5,15 @@ namespace Tasoloikka2026.Player;
 
 public partial class PlayerController : CharacterBody2D
 {
-    [Export] public float MoveSpeed = 130.0f;
+    [Export] public float MoveSpeed = 260.0f;
     [Export] public float GroundAcceleration = 900.0f;
     [Export] public float GroundDeceleration = 1000.0f;
     [Export] public float AirAcceleration = 700.0f;
     [Export] public float AirDeceleration = 500.0f;
-    [Export] public float JumpVelocity = -360.0f;
+    [Export] public float JumpVelocity = -410.0f;
     [Export] public float WallSlideSpeed = 120.0f;
     [Export] public float WallJumpHorizontalSpeed = 280.0f;
-    [Export] public float WallJumpVerticalVelocity = -360.0f;
+    [Export] public float WallJumpVerticalVelocity = -410.0f;
     [Export] public float WallJumpControlLockTime = 0.14f;
     [Export] public float GravityScale = 0.62f;
     [Export] public float FallGravityMultiplier = 1.05f;
