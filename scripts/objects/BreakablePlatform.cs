@@ -1,4 +1,5 @@
 using Godot;
+using Tasoloikka2026.Player;
 
 namespace Tasoloikka2026.Objects;
 
@@ -50,7 +51,7 @@ public partial class BreakablePlatform : Node2D
             return;
         }
 
-        if (body is CharacterBody2D)
+        if (body is PlayerController)
         {
             _isTriggered = true;
             await ToSignal(GetTree().CreateTimer(BreakDelaySeconds), SceneTreeTimer.SignalName.Timeout);

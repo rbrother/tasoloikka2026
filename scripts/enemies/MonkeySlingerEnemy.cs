@@ -13,6 +13,7 @@ public partial class MonkeySlingerEnemy : CharacterBody2D
     [Export] public float ThrowInterval = 1.5f;
     [Export] public float ThrowSpeed = 580.0f;
     [Export] public float ThrowAngleDegrees = 28.0f;
+    [Export] public float SeekDeadzoneX = 18.0f;
 
     private int _remainingHits;
     private float _jumpTimer;
@@ -21,6 +22,7 @@ public partial class MonkeySlingerEnemy : CharacterBody2D
     private Area2D? _damageArea;
     private PackedScene? _enemyStoneScene;
     private PackedScene? _explosionScene;
+    private int _facingDirection = -1;
 
     public override void _Ready()
     {
@@ -49,7 +51,13 @@ public partial class MonkeySlingerEnemy : CharacterBody2D
         var moveDir = 0.0f;
         if (player != null)
         {
-            moveDir = Mathf.Sign(player.GlobalPosition.X - GlobalPosition.X);
+            var dx = player.GlobalPosition.X - GlobalPosition.X;
+            if (Mathf.Abs(dx) > SeekDeadzoneX)
+            {
+                _facingDirection = dx > 0.0f ? 1 : -1;
+            }
+
+            moveDir = _facingDirection;
         }
 
         Velocity = new Vector2(moveDir * MoveSpeed, Velocity.Y);
@@ -80,11 +88,7 @@ public partial class MonkeySlingerEnemy : CharacterBody2D
         }
 
         var stone = _enemyStoneScene.Instantiate<EnemyStoneProjectile>();
-        float directionX = Mathf.Sign(player.GlobalPosition.X - GlobalPosition.X);
-        if (Mathf.IsZeroApprox(directionX))
-        {
-            directionX = -1.0f;
-        }
+        var directionX = (float)_facingDirection;
 
         stone.GlobalPosition = GlobalPosition + new Vector2(20.0f * directionX, -24.0f);
         var angle = Mathf.DegToRad(ThrowAngleDegrees);

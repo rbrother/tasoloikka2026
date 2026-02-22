@@ -10,10 +10,12 @@ public partial class FrogHopperEnemy : CharacterBody2D
     [Export] public float HopInterval = 1.35f;
     [Export] public float HopHorizontalSpeed = 150.0f;
     [Export] public float HopJumpVelocity = -360.0f;
+    [Export] public float SeekDeadzoneX = 18.0f;
 
     private int _remainingHits;
     private float _defaultGravity;
     private float _hopTimer;
+    private int _facingDirection = 1;
     private Area2D? _damageArea;
     private PackedScene? _explosionScene;
 
@@ -43,12 +45,16 @@ public partial class FrogHopperEnemy : CharacterBody2D
         else if (_hopTimer <= 0.0f)
         {
             var player = GetTree().GetFirstNodeInGroup("player") as PlayerController;
-            var dir = player == null ? 1.0f : Mathf.Sign(player.GlobalPosition.X - GlobalPosition.X);
-            if (Mathf.IsZeroApprox(dir))
+            if (player != null)
             {
-                dir = 1.0f;
+                var dx = player.GlobalPosition.X - GlobalPosition.X;
+                if (Mathf.Abs(dx) > SeekDeadzoneX)
+                {
+                    _facingDirection = dx > 0.0f ? 1 : -1;
+                }
             }
 
+            var dir = (float)_facingDirection;
             Velocity = new Vector2(dir * HopHorizontalSpeed, HopJumpVelocity);
             _hopTimer = HopInterval;
         }

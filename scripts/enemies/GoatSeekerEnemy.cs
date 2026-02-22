@@ -10,11 +10,13 @@ public partial class GoatSeekerEnemy : CharacterBody2D
     [Export] public float MoveSpeed = 120.0f;
     [Export] public float JumpVelocity = -430.0f;
     [Export] public float JumpCooldown = 0.55f;
+    [Export] public float SeekDeadzoneX = 18.0f;
 
     private int _remainingHits;
     private float _defaultGravity;
     private float _jumpCooldownTimer;
     private float _stuckTimer;
+    private int _facingDirection = 1;
     private Area2D? _damageArea;
     private PackedScene? _explosionScene;
 
@@ -41,7 +43,13 @@ public partial class GoatSeekerEnemy : CharacterBody2D
             return;
         }
 
-        var targetDir = Mathf.Sign(player.GlobalPosition.X - GlobalPosition.X);
+        var dx = player.GlobalPosition.X - GlobalPosition.X;
+        if (Mathf.Abs(dx) > SeekDeadzoneX)
+        {
+            _facingDirection = dx > 0.0f ? 1 : -1;
+        }
+
+        var targetDir = _facingDirection;
         Velocity = new Vector2(targetDir * MoveSpeed, Velocity.Y);
 
         if (!IsOnFloor())
