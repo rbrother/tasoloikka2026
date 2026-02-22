@@ -1,28 +1,24 @@
 using Godot;
 using Tasoloikka2026.Player;
-using Tasoloikka2026.Projectiles;
 
 namespace Tasoloikka2026.Enemies;
 
-public partial class GoatSeekerEnemy : CharacterBody2D
+public partial class GoatSeekerEnemy : EnemyBase
 {
-    [Export] public int HitsToKill = 2;
     [Export] public float MoveSpeed = 120.0f;
     [Export] public float JumpVelocity = -430.0f;
     [Export] public float JumpCooldown = 0.55f;
     [Export] public float SeekDeadzoneX = 18.0f;
 
-    private int _remainingHits;
     private float _defaultGravity;
     private float _jumpCooldownTimer;
     private float _stuckTimer;
     private int _facingDirection = 1;
     private Area2D? _damageArea;
-    private PackedScene? _explosionScene;
 
     public override void _Ready()
     {
-        _remainingHits = HitsToKill;
+        HitsToKill = 2;
         _defaultGravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
         _damageArea = GetNodeOrNull<Area2D>("DamageArea");
         if (_damageArea != null)
@@ -30,12 +26,13 @@ public partial class GoatSeekerEnemy : CharacterBody2D
             _damageArea.BodyEntered += OnBodyEntered;
         }
 
-        _explosionScene = GD.Load<PackedScene>("res://scenes/effects/Explosion.tscn");
+        InitializeEnemyBase("Sprite2D");
     }
 
     public override void _PhysicsProcess(double delta)
     {
         var dt = (float)delta;
+        UpdateEnemyBase(dt);
         _jumpCooldownTimer -= dt;
         var player = GetTree().GetFirstNodeInGroup("player") as PlayerController;
         if (player == null)
@@ -74,34 +71,6 @@ public partial class GoatSeekerEnemy : CharacterBody2D
 
     private void OnBodyEntered(Node2D body)
     {
-        if (body is PlayerController player)
-        {
-            player.Die();
-            return;
-        }
-
-        if (body is StoneProjectile stone)
-        {
-            stone.QueueFree();
-            _remainingHits--;
-            if (_remainingHits <= 0)
-            {
-                SpawnExplosion();
-                QueueFree();
-            }
-        }
-    }
-
-    private void SpawnExplosion()
-    {
-        if (_explosionScene == null)
-        {
-            return;
-        }
-
-        var explosion = _explosionScene.Instantiate<Node2D>();
-        explosion.GlobalPosition = GlobalPosition;
-        var parentNode = GetTree().CurrentScene ?? GetParent();
-        parentNode?.AddChild(explosion);
+        HandleCommonBodyEntered(body);
     }
 }

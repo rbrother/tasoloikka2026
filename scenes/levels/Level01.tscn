@@ -128,7 +128,7 @@ MoveOffset = Vector2(210, 0)
 MoveSpeed = 0.9
 
 [node name="BouncePad" parent="." unique_id=1333414049 instance=ExtResource("12_o3u7l")]
-position = Vector2(213, 888)
+position = Vector2(575, 685)
 BounceVelocity = -560.0
 
 [node name="BirdEnemy4" parent="." unique_id=1666723797 instance=ExtResource("5_moxd0")]
