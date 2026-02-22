@@ -28,6 +28,9 @@ public partial class PlayerController : CharacterBody2D
     [Export] public float MaxThrowChargeTime = 1.0f;
     [Export] public float ThrowAngleDegrees = 35.0f;
     [Export] public Vector2 ThrowSpawnOffset = new(26.0f, -34.0f);
+    [Export] public float CrouchSpeedMultiplier = 0.5f;
+    [Export] public float CrouchHeightMultiplier = 0.5f;
+    [Export] public float CrouchThrowHeightOffset = 16.0f;
 
     private float _coyoteTimer;
     private float _jumpBufferTimer;
@@ -48,6 +51,13 @@ public partial class PlayerController : CharacterBody2D
     private bool _wasOnFloor;
     private float _dropThroughTimer;
     private float _wallJumpLockTimer;
+    private bool _isCrouching;
+    private CollisionShape2D? _collisionShape;
+    private RectangleShape2D? _collisionRect;
+    private Vector2 _standingCollisionShapePosition;
+    private Vector2 _standingCollisionSize;
+    private Vector2 _standingSpritePosition;
+    private Vector2 _standingSpriteScale;
 
     public override void _Ready()
     {
@@ -68,6 +78,25 @@ public partial class PlayerController : CharacterBody2D
         {
             _chargeIndicator.Visible = false;
         }
+
+        _collisionShape = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+        _collisionRect = _collisionShape?.Shape as RectangleShape2D;
+        if (_collisionShape != null)
+        {
+            _standingCollisionShapePosition = _collisionShape.Position;
+        }
+
+        if (_collisionRect != null)
+        {
+            _standingCollisionSize = _collisionRect.Size;
+        }
+
+        if (_animatedSprite != null)
+        {
+            _standingSpritePosition = _animatedSprite.Position;
+            _standingSpriteScale = _animatedSprite.Scale;
+        }
+
         _wasOnFloor = IsOnFloor();
     }
 
@@ -81,6 +110,7 @@ public partial class PlayerController : CharacterBody2D
         var dt = (float)delta;
         var isOnFloor = IsOnFloor();
         HandleDropThrough(dt);
+        UpdateCrouchState(isOnFloor);
 
         HandleThrowInput(dt);
 
@@ -110,7 +140,8 @@ public partial class PlayerController : CharacterBody2D
         }
 
         var direction = _wallJumpLockTimer > 0.0f ? 0.0f : Input.GetAxis("move_left", "move_right");
-        var targetSpeed = direction * MoveSpeed;
+        var crouchMoveSpeed = _isCrouching ? MoveSpeed * CrouchSpeedMultiplier : MoveSpeed;
+        var targetSpeed = direction * crouchMoveSpeed;
         var acceleration = direction == 0.0f
             ? (isOnFloor ? GroundDeceleration : AirDeceleration)
             : (isOnFloor ? GroundAcceleration : AirAcceleration);
@@ -237,7 +268,9 @@ public partial class PlayerController : CharacterBody2D
         }
 
         var stone = _stoneScene.Instantiate<StoneProjectile>();
-        var spawnOffset = new Vector2(Mathf.Abs(ThrowSpawnOffset.X) * _facing, ThrowSpawnOffset.Y);
+        var spawnOffset = new Vector2(
+            Mathf.Abs(ThrowSpawnOffset.X) * _facing,
+            ThrowSpawnOffset.Y + (_isCrouching ? CrouchThrowHeightOffset : 0.0f));
         stone.GlobalPosition = GlobalPosition + spawnOffset;
 
         var chargeRatio = GetChargeRatio();
@@ -420,8 +453,8 @@ public partial class PlayerController : CharacterBody2D
         _chargeIndicator.Visible = true;
         _chargeIndicator.Scale = _facing > 0 ? Vector2.One : new Vector2(-1.0f, 1.0f);
         _chargeIndicator.Position = _facing > 0
-            ? new Vector2(34.0f, -66.0f)
-            : new Vector2(-34.0f, -66.0f);
+            ? new Vector2(34.0f, _isCrouching ? -44.0f : -66.0f)
+            : new Vector2(-34.0f, _isCrouching ? -44.0f : -66.0f);
 
         var ratio = GetChargeRatio();
         _chargeIndicator.SetCharge(ratio);
@@ -450,6 +483,34 @@ public partial class PlayerController : CharacterBody2D
         if (_animatedSprite.Animation != targetAnimation)
         {
             _animatedSprite.Play(targetAnimation);
+        }
+    }
+
+    private void UpdateCrouchState(bool isOnFloor)
+    {
+        var wantsCrouch = isOnFloor && Input.IsActionPressed("move_down");
+        _isCrouching = wantsCrouch;
+        ApplyCrouchPose(_isCrouching);
+    }
+
+    private void ApplyCrouchPose(bool crouching)
+    {
+        var heightScale = crouching ? CrouchHeightMultiplier : 1.0f;
+
+        if (_collisionRect != null)
+        {
+            _collisionRect.Size = new Vector2(_standingCollisionSize.X, _standingCollisionSize.Y * heightScale);
+        }
+
+        if (_collisionShape != null)
+        {
+            _collisionShape.Position = new Vector2(_standingCollisionShapePosition.X, _standingCollisionShapePosition.Y * heightScale);
+        }
+
+        if (_animatedSprite != null)
+        {
+            _animatedSprite.Scale = new Vector2(_standingSpriteScale.X, _standingSpriteScale.Y * heightScale);
+            _animatedSprite.Position = new Vector2(_standingSpritePosition.X, _standingSpritePosition.Y * heightScale);
         }
     }
 

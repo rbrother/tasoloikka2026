@@ -1,4 +1,5 @@
 using Godot;
+using Tasoloikka2026.Enemies;
 
 namespace Tasoloikka2026.Projectiles;
 
@@ -44,6 +45,11 @@ public partial class StoneProjectile : CharacterBody2D
         var collision = MoveAndCollide(Velocity * dt);
         if (collision != null)
         {
+            if (collision.GetCollider() is EnemyBase enemy && enemy.TryApplyStoneHit(this))
+            {
+                return;
+            }
+
             QueueFree();
             return;
         }

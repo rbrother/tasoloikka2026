@@ -85,7 +85,17 @@ public abstract partial class EnemyBase : CharacterBody2D
             return false;
         }
 
-        stone.QueueFree();
+        return TryApplyStoneHit(stone);
+    }
+
+    public bool TryApplyStoneHit(StoneProjectile? stone = null)
+    {
+        if (stone != null && stone.IsQueuedForDeletion())
+        {
+            return false;
+        }
+
+        stone?.QueueFree();
         ApplyStoneHit();
         return true;
     }

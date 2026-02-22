@@ -23,7 +23,7 @@ animations = [{
 
 [node name="BirdEnemy" type="CharacterBody2D"]
 script = ExtResource("1_2r0xq")
-collision_layer = 8
+collision_layer = 1
 collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
