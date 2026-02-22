@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1_f82ys"]
+[ext_resource type="Script" path="res://scripts/ui/ChargeThrowIndicator.cs" id="2_j8g2x"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_idle_right.png" id="2_wwnci"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_1.png" id="3_oyrt2"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_walk_right_2.png" id="4_1me6f"]
@@ -52,16 +53,9 @@ sprite_frames = SubResource("SpriteFrames_lha1o")
 animation = &"idle"
 
 [node name="ChargeIndicator" type="Node2D" parent="."]
-position = Vector2(26, -60)
+position = Vector2(34, -66)
 visible = false
-
-[node name="Back" type="Polygon2D" parent="ChargeIndicator"]
-color = Color(0.08, 0.08, 0.08, 0.85)
-polygon = PackedVector2Array(-1, -1, 27, -1, 27, 7, -1, 7)
-
-[node name="Fill" type="Polygon2D" parent="ChargeIndicator"]
-color = Color(1, 0.88, 0.22, 1)
-polygon = PackedVector2Array(0, 0, 24, 0, 24, 6, 0, 6)
+script = ExtResource("2_j8g2x")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 enabled = true

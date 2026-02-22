@@ -1,5 +1,6 @@
 using Godot;
 using Tasoloikka2026.Projectiles;
+using Tasoloikka2026.UI;
 
 namespace Tasoloikka2026.Player;
 
@@ -39,8 +40,7 @@ public partial class PlayerController : CharacterBody2D
     private AudioStreamPlayer2D? _throwSfx;
     private AudioStreamPlayer? _deathSfx;
     private AudioStreamPlayer? _winSfx;
-    private Node2D? _chargeIndicator;
-    private Polygon2D? _chargeFill;
+    private ChargeThrowIndicator? _chargeIndicator;
     private int _facing = 1;
     private bool _isChargingThrow;
     private float _throwChargeTimer;
@@ -63,8 +63,7 @@ public partial class PlayerController : CharacterBody2D
         _throwSfx = CreateSfxPlayer("res://assets/audio/sfx/throw_stone.ogg", -5.0f);
         _deathSfx = CreateUiSfxPlayer("res://assets/audio/sfx/death_sad_stinger.wav", -4.0f);
         _winSfx = CreateUiSfxPlayer("res://assets/audio/sfx/win_happy_melody.wav", -3.0f);
-        _chargeIndicator = GetNodeOrNull<Node2D>("ChargeIndicator");
-        _chargeFill = GetNodeOrNull<Polygon2D>("ChargeIndicator/Fill");
+        _chargeIndicator = GetNodeOrNull<ChargeThrowIndicator>("ChargeIndicator");
         if (_chargeIndicator != null)
         {
             _chargeIndicator.Visible = false;
@@ -407,7 +406,7 @@ public partial class PlayerController : CharacterBody2D
 
     private void UpdateChargeIndicator()
     {
-        if (_chargeIndicator == null || _chargeFill == null)
+        if (_chargeIndicator == null)
         {
             return;
         }
@@ -421,11 +420,11 @@ public partial class PlayerController : CharacterBody2D
         _chargeIndicator.Visible = true;
         _chargeIndicator.Scale = _facing > 0 ? Vector2.One : new Vector2(-1.0f, 1.0f);
         _chargeIndicator.Position = _facing > 0
-            ? new Vector2(26.0f, -60.0f)
-            : new Vector2(-26.0f, -60.0f);
+            ? new Vector2(34.0f, -66.0f)
+            : new Vector2(-34.0f, -66.0f);
 
         var ratio = GetChargeRatio();
-        _chargeFill.Scale = new Vector2(Mathf.Max(0.02f, ratio), 1.0f);
+        _chargeIndicator.SetCharge(ratio);
     }
 
     private void UpdateAnimation()
